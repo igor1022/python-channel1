@@ -143,8 +143,10 @@ const run = () => {
             await bot.sendMessage(chatId, `Выберите пожалуйста что Вы хотите`);
             await bot.sendMessage(msg.chat.id, "answer.", options);
         }
-        
-        bot.on('callback_query', function onCallbackQuery(callbackQuery) {
+
+        let flag = true;
+
+        bot.on('callback_query', async function onCallbackQuery(callbackQuery) {
             const action = callbackQuery.data;
             const msg = callbackQuery.message;
             console.log(msg.chat.id);
@@ -153,7 +155,7 @@ const run = () => {
             message_id: msg.message_id,
             };
             let text;
-        
+
             if (action === 'consultation') {
             text = 'Консультация';
             }
@@ -163,9 +165,12 @@ const run = () => {
             if (action === 'information') {
                 text = 'Информация';
             }
-            console.log(text);
-            bot.sendMessage(423871593, text);
+            if (flag) { 
+                await bot.sendMessage(msg.chat.id, text);
+            }    
+            flag = false;
         });
+      
         return;
     })
 }
