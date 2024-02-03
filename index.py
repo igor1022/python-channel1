@@ -16,7 +16,8 @@ async def forward_messages(event):
                 
         # Пересылка сообщения в целевой канал
         destination_entity = await client.get_entity(destination_channel)
-        await client.forward_messages(destination_entity, event.message)
+        if (event.message.photo and event.message.text):
+            await client.send_file(destination_entity, file=event.message.photo, caption=event.message.text)
                 
     except Exception as e:
         print(f"Error: {e}")
